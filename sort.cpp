@@ -108,15 +108,42 @@ void heap_sort(int* a, int len)//堆排序
         }
 }
 
+void merge(int* a, int l, int mid, int r, int n) { // 两个数组合并，如果是链表得用两个链表的合并，思想一样
+    int tmp[n];
+    int i = l, j = mid + 1, k = l;
+    while(i != mid + 1 && j != r + 1) {
+        if(a[i] < a[j])
+            tmp[k++] = a[i++];
+        else
+            tmp[k++] = a[j++];
+    }
+    while(i < mid + 1)
+        tmp[k++] = a[i++];
+    while(j < r + 1)
+        tmp[k++] = a[j++];
+    for(int t = l; t <= r; t++)
+        a[t] = tmp[t];
+}
+
+void merge_sort(int* a, int l, int r, int n) { // 归并排序可以用于链表的排序
+    if(l >= r)
+        return;
+    int mid = l + ((r - l) >> 1);
+    merge_sort(a, l, mid, n);
+    merge_sort(a, mid + 1, r, n);
+    merge(a, l, mid, r, n);
+}
+
 int main()
 {
         //quickSort(0, 9);
         //insertSort(10);
         //shellSort(10);
-
+        
         int a[10] = { 3, 2, 7, 4, 2, -999, -21, 99, 0, 9 };
         
         int len = sizeof(a) / sizeof(int);
+        //merge_sort(a, 0, len - 1, len);
         for (int i = 0; i < len; ++i)
                cout << a[i] << ' ';
         cout << endl;
